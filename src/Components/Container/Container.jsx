@@ -1,6 +1,7 @@
 import { Container, Title } from './Container.styled';
+import PropTypes from "prop-types";
 
-export const Section = ({title, children}) => {
+const Section = ({title, children}) => {
     return (
         <Container>
             {title && <Title>{title}</Title>}
@@ -8,5 +9,10 @@ export const Section = ({title, children}) => {
         </Container>
     )
 }
+
+Section.propTypes = {
+  title: PropTypes.string,
+  children: PropTypes.node,
+};
 
 export default Section;

@@ -1,59 +1,83 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 // import { render } from "@testing-library/react"; 
-import {FeedbackOptions} from "Components/FeedbackOptions/FeedbackOptions";
-import { Statistics } from "Components/Statistics/Statistics";
-import { Section } from "Components/Container/Container";
-import { Notification } from "Components/Notification/Notification";
-import { AppContainer } from "./App.styled";
+import FeedbackOptions from "../FeedbackOptions/FeedbackOptions";
+import  Statistics  from "../Statistics/Statistics";
+import  Section  from "../Container/Container";
+import  {Notification}  from "../Notification/Notification";
+import  {AppContainer}  from "./App.styled";
 // import { GrInstagram } from "react-icons/gr";
 
-export class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+export default function App () {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const leaveFeedback = feedback => {
+    switch (feedback) {
+      case 'good':
+        return setGood(state => state + 1);
+
+      case 'neutral':
+        return setNeutral(state => state + 1);
+
+      case 'bad':
+        return setBad(state => state + 1);
+
+      default:
+        return;
+    }
   };
 
-  leaveFeedback = (option) => {
-    this.setState((prevState) =>
-      ({ [option]: prevState[option] + 1 }));
-  }
+  // useEffect(() => {
+  //   setGood(prevState=>prevState + 1)
+  //   return () => {
+      
+  //   }
+  // }, [good]);
+  
+  
+  // useEffect(() => {
+  //   setNeutral(prevState=>prevState + 1)
+  //   return () => {
+      
+  //   }
+  // }, [neutral]);
+  
+  
+  //   useEffect(() => {
+  //   setBad(prevState=>prevState + 1)
+  //   return () => {
+      
+  //   }
+  // }, [bad]);
 
-  countTotalFeedback = () => {
-    const { good, neutral, bad } = this.state;
+  const countTotalFeedback = () => {
     return good + neutral + bad;
   }
 
-   countPositiveFeedbackPercentag = () => {
-    const { good } = this.state;
-    return Math.round((good * 100) / this.countTotalFeedback()) || 0;
+  const countPositiveFeedbackPercentag = () => {
+    return Math.round((good * 100) / countTotalFeedback()) || 0;
   };
 
-  render() {
-    const { good, neutral, bad } = this.state;
-    return (
-      <AppContainer>
-        {/* <GrInstagram></GrInstagram> */}
-        <Section title="Please leave feedback">
-         <FeedbackOptions options={["good", "neutral", "bad"]} onSelect={this.leaveFeedback} />
-        </Section>
-      
-        <Section title="Statistics">
-          {this.countTotalFeedback() !== 0 ? (
-            <Statistics
-              good={good}
-              neutral={neutral}
-              bad={bad}
-              total={this.countTotalFeedback()}
-              positivePercentage={this.countPositiveFeedbackPercentag()}
-            />) : (
-            <Notification message="No feedback given" />)
-          }
-        </Section>
-      </AppContainer>
-    );
-      
-  }
+  return (
+    <AppContainer>
+      {/* <GrInstagram></GrInstagram> */}
+      <Section title="Please leave feedback">
+        <FeedbackOptions options={["good", "neutral", "bad"]} onSelect={leaveFeedback} />
+      </Section>
+    
+      <Section title="Statistics">
+        {countTotalFeedback() !== 0 ? (
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={countTotalFeedback()}
+            positivePercentage={countPositiveFeedbackPercentag()}
+          />) : (
+          <Notification message="No feedback given" />)
+        }
+      </Section>
+    </AppContainer>
+  );
 }
-
-export default App;
