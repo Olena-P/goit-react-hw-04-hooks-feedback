@@ -15,41 +15,18 @@ export default function App () {
   const leaveFeedback = feedback => {
     switch (feedback) {
       case 'good':
-        return setGood(state => state + 1);
+        return setGood(prevState => prevState + 1);
 
       case 'neutral':
-        return setNeutral(state => state + 1);
+        return setNeutral(prevState => prevState + 1);
 
       case 'bad':
-        return setBad(state => state + 1);
+        return setBad(prevState => prevState + 1);
 
       default:
         return;
     }
   };
-
-  // useEffect(() => {
-  //   setGood(prevState=>prevState + 1)
-  //   return () => {
-      
-  //   }
-  // }, [good]);
-  
-  
-  // useEffect(() => {
-  //   setNeutral(prevState=>prevState + 1)
-  //   return () => {
-      
-  //   }
-  // }, [neutral]);
-  
-  
-  //   useEffect(() => {
-  //   setBad(prevState=>prevState + 1)
-  //   return () => {
-      
-  //   }
-  // }, [bad]);
 
   const countTotalFeedback = () => {
     return good + neutral + bad;
